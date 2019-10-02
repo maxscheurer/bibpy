@@ -96,6 +96,9 @@ if __name__ == "__main__":
     parser.add_argument("--remove-duplicates", "-r",
                         help="Remove duplicate entries (based on DOI)",
                         action="store_true", default=False)
+    parser.add_argument("--sanitize-keys", "-s",
+                        help="Create nice citation keys",
+                        action="store_true", default=False)
     args = parser.parse_args()
 
     with open(journal_db_file, "r") as journal_file:
@@ -137,7 +140,8 @@ if __name__ == "__main__":
                 dois.append(doi)
 
         # sanitize citation key
-        entry["ID"] = nice_citation_key(entry)
+        if args.sanitize_keys:
+            entry["ID"] = nice_citation_key(entry)
 
         # make everything title-case
         title = entry.get("title", None)
